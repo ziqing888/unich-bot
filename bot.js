@@ -11,7 +11,6 @@ import chalk from 'chalk';
  * 开发人员不对因使用此机器人而导致的任何帐户封禁或处罚负责。
  */
 
-
 const CONFIG = {
     tokensFile: 'tokens.txt',            
     apiBaseUrl: 'https://api.unich.com',  
@@ -19,10 +18,9 @@ const CONFIG = {
     taskDelay: 500,                        
 };
 
-// 创建事件驱动
+
 const eventEmitter = new events.EventEmitter();
 
-// 工具函数
 const utils = {
     async readTokens(filePath) {
         try {
@@ -127,15 +125,22 @@ class MinerBot {
 
     async claimReward(token, taskId) {
         try {
+            const payload = { evidence: taskId }; 
+
             const response = await axios.post(
                 `${this.config.apiBaseUrl}/airdrop/user/v1/social/claim/${taskId}`,
-                {},
+                payload,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-            logWithTimestamp('成功', `奖励领取成功：获得 ${response.data.data.pointReward} 积分`);
-            return response.data;
+
+            logWithTimestamp('成功', `任务领取成功：任务ID ${taskId}，积分奖励：${response.data.data.pointReward}`);
         } catch (error) {
-            logWithTimestamp('错误', `奖励领取失败 - 任务ID: ${taskId} - ${error.message}`);
+            const status = error.response?.status || '未知';
+            const message = error.response?.data?.message || error.message;
+            logWithTimestamp(
+                '错误',
+                `任务领取失败 - 状态码: ${status} - 错误信息: ${JSON.stringify(error.response?.data || {})}`
+            );
         }
     }
 
@@ -149,12 +154,14 @@ class MinerBot {
         }
 
         const unclaimedTasks = await this.getTasks(token);
-
         if (unclaimedTasks.length > 0) {
-            logWithTimestamp('信息', `发现 ${unclaimedTasks.length} 个未领取的任务。`);
             for (const task of unclaimedTasks) {
-                logWithTimestamp('信息', `正在尝试领取任务：任务ID ${task.id}`);
-                await this.claimReward(token, task.id);
+                try {
+                    logWithTimestamp('信息', `尝试领取任务：任务ID ${task.id}`);
+                    await this.claimReward(token, task.id);
+                } catch (error) {
+                    logWithTimestamp('错误', `任务领取失败 - 任务ID: ${task.id}`);
+                }
                 await utils.delay(this.config.taskDelay);
             }
         } else {
@@ -183,7 +190,6 @@ class MinerBot {
         }
     }
 }
-
 
 (async () => {
     const minerBot = new MinerBot(CONFIG);
