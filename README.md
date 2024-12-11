@@ -8,7 +8,7 @@ Unich平台具有盘前场外交易、点市场场外交易和期权场外交易
 
 ▶️Unich要开启一次空投计划，这个活动的总奖金来到了$UN总供应量的50%,很有可能可以赢得属于自己的巨额小金库
 
-♾空投链接： [https://unich.com/en/airdrop](https://unich.com/en/airdrop/sign-up?ref=JJQ7EY)
+### ♾注册空投链接： [https://unich.com/en/airdrop](https://unich.com/en/airdrop/sign-up?ref=JJQ7EY)
 
 
 Unich可能未来会被更多的人使用，而且活动任务简单，有时间的兄弟们真的可以参与一下，搏一搏单车变摩托
