@@ -1,4 +1,21 @@
 # unich-bot
+![image](https://github.com/user-attachments/assets/3bd8451b-d278-4434-b635-a979777898bf)
+
+一个可以OTC的交易平台——@unich_com
+
+
+Unich平台具有盘前场外交易、点市场场外交易和期权场外交易市场等高级功能，而且他们还会有更多的的场外交易和DEX等功能，目前已经可以支持很多项目了
+
+▶️Unich要开启一次空投计划，这个活动的总奖金来到了$UN总供应量的50%,很有可能可以赢得属于自己的巨额小金库
+
+♾空投链接：https://unich.com/en/airdrop/sign-up?ref=JJQ7EY
+
+
+🌐官方网站: https://unich.com 
+✈️Telegram: https://t.me/Unichcom
+
+总结：
+Unich可能未来会被更多的人使用，而且活动任务简单，有时间的兄弟们真的可以参与一下，搏一搏单车变摩托
 
 📢 **电报频道**: [https://t.me/ksqxszq](https://t.me/ksqxszq)
 
