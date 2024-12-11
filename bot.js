@@ -1,14 +1,22 @@
-
 import axios from 'axios';
 import fs from 'fs/promises';
 import events from 'events';
+import chalk from 'chalk';
 
-// 配置对象
+/**
+ * 📢 电报频道：https://t.me/ksqxszq
+ *
+ * 免責聲明：
+ * 此机器人仅用于教育目的。使用风险自负。
+ * 开发人员不对因使用此机器人而导致的任何帐户封禁或处罚负责。
+ */
+
+
 const CONFIG = {
-    tokensFile: 'tokens.txt',             
-    apiBaseUrl: 'https://api.unich.com',   
-    miningInterval: 60 * 60 * 1000,       
-    taskDelay: 500,                      
+    tokensFile: 'tokens.txt',            
+    apiBaseUrl: 'https://api.unich.com',  
+    miningInterval: 60 * 60 * 1000,        
+    taskDelay: 500,                        
 };
 
 // 创建事件驱动
@@ -30,15 +38,23 @@ const utils = {
     },
     getTimestamp() {
         const now = new Date();
-        const offset = 8 * 60 * 60 * 1000; // UTC+8 时区偏移
+        const offset = 8 * 60 * 60 * 1000; 
         const beijingTime = new Date(now.getTime() + offset);
-        return beijingTime.toISOString().replace('T', ' ').split('.')[0]; // 输出格式：YYYY-MM-DD HH:mm:ss
+        return beijingTime.toISOString().replace('T', ' ').split('.')[0]; 
     },
+};
+
+const logLevels = {
+    信息: chalk.blue,
+    成功: chalk.green,
+    警告: chalk.yellow,
+    错误: chalk.red,
 };
 
 function logWithTimestamp(level, message) {
     const timestamp = utils.getTimestamp();
-    console.log(`[${timestamp}] [${level}] ${message}`);
+    const colorFn = logLevels[level] || chalk.white;
+    console.log(`[${timestamp}] [${colorFn(level)}] ${message}`);
 }
 
 // 核心逻辑
@@ -49,6 +65,13 @@ class MinerBot {
     }
 
     async init() {
+        console.log('📢 电报频道：https://t.me/ksqxszq');
+        console.log('=========================================');
+        console.log('免責聲明：');
+        console.log('此机器人仅用于教育目的。使用风险自负。');
+        console.log('开发人员不对因使用此机器人而导致的任何帐户封禁或处罚负责。');
+        console.log('=========================================');
+
         logWithTimestamp('信息', '初始化 MinerBot...');
         this.tokens = await utils.readTokens(this.config.tokensFile);
         if (this.tokens.length === 0) {
@@ -132,7 +155,7 @@ class MinerBot {
             for (const task of unclaimedTasks) {
                 logWithTimestamp('信息', `正在尝试领取任务：任务ID ${task.id}`);
                 await this.claimReward(token, task.id);
-                await utils.delay(this.config.taskDelay); // 防止请求过于频繁
+                await utils.delay(this.config.taskDelay);
             }
         } else {
             logWithTimestamp('信息', '当前没有未领取的任务。');
@@ -161,7 +184,7 @@ class MinerBot {
     }
 }
 
-// 主函数
+
 (async () => {
     const minerBot = new MinerBot(CONFIG);
     await minerBot.init();
