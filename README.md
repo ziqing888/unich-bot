@@ -47,6 +47,17 @@ cd unich-bot
 npm install
 ```
 ### 4. 配置令牌
+获取您的令牌（Token）：
+
+按 F12 打开浏览器开发者工具。
+
+选择 Network（网络） 标签。
+
+在请求头中找到 Authorization: Bearer，这就是您的令牌。
+![image](https://github.com/user-attachments/assets/49901294-90c3-488f-aa13-77c4eed69efa)
+
+
+如果有多个账户，每行填写一个令牌。
 在项目根目录下创建一个名为 tokens.txt 的文件，并在文件中添加你的令牌（每行一个令牌）。示例：
 ```
 eyJhbGciOiJIUzI1NiJ9...token1
