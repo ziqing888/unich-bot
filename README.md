@@ -11,10 +11,6 @@ Unich平台具有盘前场外交易、点市场场外交易和期权场外交易
 ♾空投链接：https://unich.com/en/airdrop/sign-up?ref=JJQ7EY
 
 
-🌐官方网站: https://unich.com 
-✈️Telegram: https://t.me/Unichcom
-
-总结：
 Unich可能未来会被更多的人使用，而且活动任务简单，有时间的兄弟们真的可以参与一下，搏一搏单车变摩托
 
 📢 **电报频道**: [https://t.me/ksqxszq](https://t.me/ksqxszq)
