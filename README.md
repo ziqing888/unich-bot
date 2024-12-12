@@ -60,8 +60,8 @@ npm install
 如果有多个账户，每行填写一个令牌。
 在项目根目录下创建一个名为 tokens.txt 的文件，并在文件中添加你的令牌（每行一个令牌）。示例：
 ```
-eyJhbGciOiJIUzI1NiJ9...token1
-eyJhbGciOiJIUzI1NiJ9...token2
+eyJhbGciOiJIUzI1NiJ9...
+eyJhbGciOiJIUzI1NiJ9...
 ```
 
 ### 5. 启动项目
