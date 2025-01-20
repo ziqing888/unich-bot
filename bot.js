@@ -15,9 +15,8 @@ const CONFIG = {
     tokensFile: 'tokens.txt',            
     apiBaseUrl: 'https://api.unich.com',  
     miningInterval: 60 * 60 * 1000,        
-    taskDelay: 500,                        
+    taskDelay: 500,                         
 };
-
 
 const eventEmitter = new events.EventEmitter();
 
@@ -62,6 +61,22 @@ class MinerBot {
         this.tokens = [];
     }
 
+    async validateToken(token) {
+        try {
+            const response = await axios.get(
+                `${this.config.apiBaseUrl}/airdrop/user/v1/validate-token`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            if (response.status === 200) {
+                logWithTimestamp('成功', `令牌有效: ${token}`);
+                return true;
+            }
+        } catch (error) {
+            logWithTimestamp('错误', `令牌无效: ${token} - ${error.message}`);
+            return false;
+        }
+    }
+
     async init() {
         console.log('📢 电报频道：https://t.me/ksqxszq');
         console.log('=========================================');
@@ -76,6 +91,16 @@ class MinerBot {
             logWithTimestamp('错误', '未找到任何令牌，程序退出！');
             process.exit(1);
         }
+
+        // 验证令牌有效性
+        for (const token of this.tokens) {
+            const isValid = await this.validateToken(token);
+            if (!isValid) {
+                logWithTimestamp('错误', `无效的令牌: ${token}，跳过此令牌。`);
+                continue; // 跳过无效的令牌
+            }
+        }
+
         logWithTimestamp('信息', `加载 ${this.tokens.length} 个令牌。`);
     }
 
@@ -99,11 +124,16 @@ class MinerBot {
                 `${this.config.apiBaseUrl}/airdrop/user/v1/mining/recent`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
+            if (response.status !== 200) {
+                logWithTimestamp('错误', `获取挖矿状态失败 - Token: ${token} - 状态码: ${response.status}`);
+                return {};
+            }
             const miningData = response.data.data;
-            logWithTimestamp('信息', `挖矿状态：${miningData.isMining ? '已开启' : '未开启'} | 当前总积分：${miningData.mUn}`);
+            logWithTimestamp('信息', `挖矿状态：${miningData.isMining ? '已开启' : '未开启'} | 当前总积分：${miningData.mUn || '未知'}`);
             return miningData;
         } catch (error) {
-            logWithTimestamp('错误', `获取挖矿状态失败 - Token: ${token} - ${error.message}`);
+            logWithTimestamp('错误', `获取挖矿状态失败 - Token: ${token} - 错误信息: ${error.message}`);
+            return {};
         }
     }
 
@@ -148,9 +178,9 @@ class MinerBot {
         const miningData = await this.getRecentMining(token);
         if (!miningData?.isMining) {
             await this.startMining(token);
-            logWithTimestamp('信息', `挖矿已启动 - 当前总积分：${miningData.mUn}`);
+            logWithTimestamp('信息', `挖矿已启动 - 当前总积分：${miningData?.mUn || '未知'}`);
         } else {
-            logWithTimestamp('信息', `挖矿状态：已开启 | 当前总积分：${miningData.mUn}`);
+            logWithTimestamp('信息', `挖矿状态：已开启 | 当前总积分：${miningData?.mUn || '未知'}`);
         }
 
         const unclaimedTasks = await this.getTasks(token);
